@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var port = 4040;
+var port = process.env.PORT || 4040;
 
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
