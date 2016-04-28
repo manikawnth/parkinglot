@@ -25,6 +25,7 @@ app.get('/lot',function(req,res){
 	if(req.query.id == 'all'){
 		res.json(lots);
 	}
+
 })
 
 app.get('/dev',function(req,res){
@@ -32,6 +33,14 @@ app.get('/dev',function(req,res){
 		res.json(lot_devices);
 	}
 })
+
+app.get('/veh',function(req,res){
+	if(req.query.id){
+		resp = {'veh':vehicles[req.query.id]};
+		res.json(resp);
+	}
+})
+
 
 app.post('/lot',function(req,res){
 	var lotid = req.query.lotid;
