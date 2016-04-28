@@ -45,9 +45,10 @@ app.get('/veh',function(req,res){
 app.post('/lot',function(req,res){
 	var lotid = req.query.lotid;
 	var devid = req.query.devid;
-    
-    lots[devid] = lotid;
-    res.json(lots);
+	if(lotid && devid && lots[devid] ){
+	    lots[devid] = lotid;
+	}    
+	res.json(lots);		
 
 })
 
