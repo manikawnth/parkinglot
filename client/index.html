@@ -29,13 +29,15 @@
                             <table st-table="pc.lots" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Bluetooth Dev Id</th>
-                                        <th>Parking Lot Id</th>
+                                        <th>BLE Address</th>
+                                        <th>BLE Name</th>
+                                        <th>Parking Lot</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="(devid,lotid) in pc.lots">
                                         <td>{{devid}}</td>
+                                        <td>{{pc.lot_devices[devid] | uppercase}}</td>
                                         <td>{{lotid}}</td>
                                     </tr>
                                 </tbody>
@@ -49,7 +51,7 @@
                                 <label>Device Id</label>
                                 <md-select ng-model="pc.selected_device">
                                     <md-option ng-repeat="(devid,lotid) in pc.lots" value="{{devid}}">
-                                        {{devid}}
+                                        {{pc.lot_devices[devid] | uppercase}}
                                     </md-option>
                                 </md-select>
                             </md-input-container>
