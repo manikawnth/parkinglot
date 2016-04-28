@@ -1,0 +1,101 @@
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+    <style type="text/css">
+    html {
+        min-height: 100%;
+    }
+    
+    body {
+        min-height: 100%;
+        height: auto;
+    }
+    </style>
+</head>
+
+<body ng-app="ParkingApp" ng-cloak>
+    <md-content flex>
+        <md-tabs class="md-primary md-hue-2" md-selected="0" md-align-tabs="top" md-dynamic-height md-border-bottom>
+            <md-tab id="parking">
+                <md-tab-label>Parking Lot Configuration</md-tab-label>
+                <md-tab-body>
+                    <div ng-controller="ParkingCtrl as pc" layout="column" flex layout-margin="100" layout-align="center center">
+                        <div>
+                            <h2>Current Parking lot assignments</h2>
+                            <table st-table="pc.lots" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Bluetooth Dev Id</th>
+                                        <th>Parking Lot Id</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(devid,lotid) in pc.lots">
+                                        <td>{{devid}}</td>
+                                        <td>{{lotid}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h2>Modify Parking lot assignments</h2>
+                            <br />
+                            <div layout="row" layout-align="space-around">
+                            <md-input-container>
+                                <label>Device Id</label>
+                                <md-select ng-model="pc.selected_device">
+                                    <md-option ng-repeat="(devid,lotid) in pc.lots" value="{{devid}}">
+                                        {{devid}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container >
+                                <label>Parking Lot Id</label>
+                                <input type="text" maxlength="3" ng-model="pc.input_lot">
+                            </md-input-container>
+                            <md-input-container >
+                            <md-button class="md-raised" ng-click="pc.assign_lot();">Submit</md-button>
+                            </md-input-container>
+                            </div>
+                            <div layout="row" >
+                              <label style="color:red;">{{pc.errorMsg}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab id="vehicle">
+                <md-tab-label>Vehicle Configuration</md-tab-label>
+                <md-tab-body>
+                    <div layout="column" flex layout-margin="100">
+                        View for Item #x
+                    </div>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+    <!--
+    Your HTML content here
+  -->
+    <script type="text/javascript" src="./js/underscore.min.js"></script>
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-messages.min.js"></script>
+    <!-- Angular Material Library -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+    <!-- Your application bootstrap  -->
+    <script type="text/javascript" src="./js/app.js"></script>
+    <script type="text/javascript" src="./js/smart-table.js"></script>
+</body>
+
+</html>
+<!--
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at http://material.angularjs.org/license.
+-->
