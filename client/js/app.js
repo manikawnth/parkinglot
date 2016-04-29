@@ -93,11 +93,12 @@
             parkingLot.pollDevice('00:1A:7D:DA:71:14',pc.version)
             .then(function(resp){
                 var flag = false;
-                if (resp.data.mva != ' ' && parkingLot.lastCheckin.mva != resp.data.mva){
+                if ((resp.data.mva != ' ') && (parkingLot.lastCheckin.mva != resp.data.mva)){
                     flag = true;
                 }
                 parkingLot.lastCheckin = resp.data;
                 if (flag){
+                    pc.modal_title = 'Vehicle Checked out of Lot ' + parkingLot.lots['00:1A:7D:DA:71:14']
                     pc.modal_html = '<div><pre>MVA   - ' + parkingLot.lastCheckin.mva + '\nMILES - ' + parkingLot.lastCheckin.miles + '\nGAS   - ' + parkingLot.lastCheckin.gas + '</pre></div>' 
                     pc.showSimpleToast(parkingLot.lastCheckin);    
                 }
@@ -111,7 +112,7 @@
                 $mdDialog.alert()
                 .parent(angular.element(document.querySelector('body')))
                 .clickOutsideToClose(true)
-                .title('Vehicle Checked out of Lot A12')
+                .title(pc.modal_title)
                 .htmlContent(pc.modal_html)
                 .ariaLabel('Alert Dialog Demo')
                 .ok('Got it!')
