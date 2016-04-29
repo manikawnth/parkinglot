@@ -52,14 +52,32 @@ app.post('/lot',function(req,res){
 
 })
 
+app.post('/checkin',function(req,res){
+	var lotid = req.body.lotid;
+	var mva = req.body.mva;
+	var miles = req.body.miles;
+	var gas = req.body.gas
+	
+	checkin.mva = mva;
+	checkin.miles = miles;
+	checkin.gas = gas;
+
+})
+
+
+app.get('/checkin',function(req,res){
+	var lotid = req.query.lotid;
+	res.json(checkin[lotid]);
+
+})
 app.listen(port, function() {
     console.log("Server is listening on port " + port);
 })
 
 var lot_devices = {
-	'00:1A:7D:DA:71:14':'pi2',
-	'60:1A:7D:DA:71:15':'pi3',
-	'80:1A:7D:DA:71:14':'pi4'
+	'00:1A:7D:DA:71:14':'LOT1',
+	'60:1A:7D:DA:71:15':'DUMMY2',
+	'80:1A:7D:DA:71:14':'DUMMY3'
 }
 
 var vehicles = {
@@ -70,4 +88,8 @@ var lots = {
     '00:1A:7D:DA:71:14': 'A11',
     '60:1A:7D:DA:71:15': 'A22',
     '80:1A:7D:DA:71:14': 'B12'
+}
+
+var checkin = {
+	'00:1A:7D:DA:71:14' : { mva:' ' , miles:' ',gas:' '}
 }

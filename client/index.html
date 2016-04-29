@@ -47,24 +47,24 @@
                             <h2>Modify Parking lot assignments</h2>
                             <br />
                             <div layout="row" layout-align="space-around">
-                            <md-input-container>
-                                <label>Device Id</label>
-                                <md-select ng-model="pc.selected_device">
-                                    <md-option ng-repeat="(devid,lotid) in pc.lots" value="{{devid}}">
-                                        {{pc.lot_devices[devid] | uppercase}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-                            <md-input-container >
-                                <label>Parking Lot Id</label>
-                                <input type="text" maxlength="3" ng-model="pc.input_lot">
-                            </md-input-container>
-                            <md-input-container >
-                            <md-button class="md-raised" ng-click="pc.assign_lot();">Submit</md-button>
-                            </md-input-container>
+                                <md-input-container>
+                                    <label>Device Id</label>
+                                    <md-select ng-model="pc.selected_device">
+                                        <md-option ng-repeat="(devid,lotid) in pc.lots" value="{{devid}}">
+                                            {{pc.lot_devices[devid] | uppercase}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container>
+                                    <label>Parking Lot Id</label>
+                                    <input type="text" maxlength="3" ng-model="pc.input_lot">
+                                </md-input-container>
+                                <md-input-container>
+                                    <md-button class="md-raised" ng-click="pc.assign_lot();">Submit</md-button>
+                                </md-input-container>
                             </div>
-                            <div layout="row" >
-                              <label style="color:red;">{{pc.errorMsg}}</label>
+                            <div layout="row">
+                                <label style="color:red;">{{pc.errorMsg}}</label>
                             </div>
                         </div>
                     </div>
@@ -80,6 +80,7 @@
             </md-tab>
         </md-tabs>
     </md-content>
+
     <!--
     Your HTML content here
   -->
@@ -89,6 +90,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.min.js"></script>
     <!-- Angular Material Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
     <!-- Your application bootstrap  -->

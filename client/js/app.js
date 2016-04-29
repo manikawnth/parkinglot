@@ -4,7 +4,7 @@
  * Description
  */
 (function() {
-    var app = angular.module('ParkingApp', ['ngMaterial', 'smart-table']);
+    var app = angular.module('ParkingApp', ['ngMaterial', 'ngSanitize','smart-table']);
 
     //Any configuration
     app.config(function($mdThemingProvider) {
@@ -44,13 +44,16 @@
                 if (lotid) {
                     return _.invert(this.lots)[lotid];
                 }
+            },
+            pollDevice: function(lotid){
+                return $http.get('/checkin?lotid=' + lotid);
             }
         }
         return parkinglot;
     }])
 
     //Controller
-    app.controller('ParkingCtrl', ['$scope', 'parkingLot', function($scope, parkingLot) {
+    app.controller('ParkingCtrl', ['$scope', '$interval','$mdDialog', 'parkingLot', function($scope, $interval,$mdDialog, parkingLot) {
         var pc = this;
         pc.errorMsg = '';
 
@@ -73,17 +76,42 @@
             var devid = parkingLot.getDev(pc.input_lot);
             if (devid) {
                 pc.errorMsg = "Parking Lot already assigned to device:" + devid;
-            } 
-            else {
+            } else {
                 parkingLot.saveLot(pc.selected_device, pc.input_lot)
                     .then(function(resp) {
                         parkingLot.lots = resp.data;
                         pc.lots = parkingLot.lots;
+                        //pc.showSimpleToast();
                     })
             }
             pc.selected_device = undefined;
             pc.input_lot = undefined;
         }
+        parkingLot.lastCheckin = {mva:' ',miles:' ',gas:' '}
+        $interval(function(){
+            parkingLot.pollDevice('00:1A:7D:DA:71:14')
+            .then(function(resp){
+                if (resp.data.mva != ' ' && parkingLot.lastCheckin.mva != resp.data.mva){
+                    parkingLot.lastCheckin = resp.data;
+                    pc.modal_html = '<div><pre>MVA   - ' + parkingLot.lastCheckin.mva + '\nMILES - ' + parkingLot.lastCheckin.miles + '\nGAS   - ' + parkingLot.lastCheckin.gas + '</pre></div>' 
+                    pc.showSimpleToast(parkingLot.lastCheckin);    
+                }
+            })
+        },5000)
+
+        
+            //Open a toast when there is a response
+        pc.showSimpleToast = function() {
+            $mdDialog.show(
+                $mdDialog.alert()
+                .parent(angular.element(document.querySelector('body')))
+                .clickOutsideToClose(true)
+                .title('Vehicle Checked out of Lot A12')
+                .htmlContent(pc.modal_html)
+                .ariaLabel('Alert Dialog Demo')
+                .ok('Got it!')
+            );
+        };
     }]);
 
 })()
