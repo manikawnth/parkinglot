@@ -92,8 +92,12 @@
             pc.version += 1;
             parkingLot.pollDevice('00:1A:7D:DA:71:14',pc.version)
             .then(function(resp){
+                var flag = false;
                 if (resp.data.mva != ' ' && parkingLot.lastCheckin.mva != resp.data.mva){
-                    parkingLot.lastCheckin = resp.data;
+                    flag = true;
+                }
+                parkingLot.lastCheckin = resp.data;
+                if (flag){
                     pc.modal_html = '<div><pre>MVA   - ' + parkingLot.lastCheckin.mva + '\nMILES - ' + parkingLot.lastCheckin.miles + '\nGAS   - ' + parkingLot.lastCheckin.gas + '</pre></div>' 
                     pc.showSimpleToast(parkingLot.lastCheckin);    
                 }
