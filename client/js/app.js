@@ -45,15 +45,15 @@
                     return _.invert(this.lots)[lotid];
                 }
             },
-            pollDevice: function(lotid){
-                return $http.get('/checkin?lotid=' + lotid);
+            pollDevice: function(lotid,version){
+                return $http.get('/checkin?lotid=' + lotid + '&version=' + version );
             }
         }
         return parkinglot;
     }])
 
     //Controller
-    app.controller('ParkingCtrl', ['$scope', '$interval','$mdDialog', 'parkingLot', function($scope, $interval,$mdDialog, parkingLot) {
+    app.controller('ParkingCtrl', ['$scope', '$http','$interval','$mdDialog', 'parkingLot', function($scope, $http,$interval,$mdDialog, parkingLot) {
         var pc = this;
         pc.errorMsg = '';
 
@@ -70,7 +70,7 @@
             });
         //pc.selected_device is the device id number
         //pc.input_lot is the input lot number
-
+        pc.version = 0;
         pc.assign_lot = function() {
             pc.errorMsg = '';
             var devid = parkingLot.getDev(pc.input_lot);
@@ -81,15 +81,16 @@
                     .then(function(resp) {
                         parkingLot.lots = resp.data;
                         pc.lots = parkingLot.lots;
-                        //pc.showSimpleToast();
                     })
             }
+            
             pc.selected_device = undefined;
             pc.input_lot = undefined;
         }
         parkingLot.lastCheckin = {mva:' ',miles:' ',gas:' '}
         $interval(function(){
-            parkingLot.pollDevice('00:1A:7D:DA:71:14')
+            pc.version += 1;
+            parkingLot.pollDevice('00:1A:7D:DA:71:14',pc.version)
             .then(function(resp){
                 if (resp.data.mva != ' ' && parkingLot.lastCheckin.mva != resp.data.mva){
                     parkingLot.lastCheckin = resp.data;

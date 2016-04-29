@@ -8,7 +8,7 @@ var morgan = require('morgan');
 
 app.use(express.static('client'));
 
-app.use(morgan('combined'));
+//app.use(morgan('combined'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 
 app.get('/', function(req, res) {
-    console.log("Entered home page");
+    //console.log("Entered home page");
     res.sendFile('index.html', { root: __dirname + '/client' });
 })
 
@@ -53,14 +53,16 @@ app.post('/lot',function(req,res){
 })
 
 app.post('/checkin',function(req,res){
+	//console.log(req.body);	
 	var lotid = req.body.lotid;
 	var mva = req.body.mva;
 	var miles = req.body.miles;
 	var gas = req.body.gas
 	
-	checkin.mva = mva;
-	checkin.miles = miles;
-	checkin.gas = gas;
+	checkin[lotid].mva = mva;
+	checkin[lotid].miles = miles;
+	checkin[lotid].gas = gas;
+	//console.log(checkin);
 	res.status(200).end();
 })
 
