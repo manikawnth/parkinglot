@@ -61,7 +61,7 @@ app.post('/checkin',function(req,res){
 	checkin.mva = mva;
 	checkin.miles = miles;
 	checkin.gas = gas;
-
+	res.status(200).end();
 })
 
 
