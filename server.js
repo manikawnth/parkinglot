@@ -11,7 +11,7 @@ app.use(express.static('client'));
 //app.use(morgan('combined'));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 
@@ -41,17 +41,18 @@ app.post('/veh', function(req, res) {
     if (req.query.id) {
         resp = { 'veh': vehicles[req.query.id] };
         res.json(resp);
-    } else if {
+    } else{
+
         var req_veh = req.body.veh; // This is an array
         var resp_veh = { veh: [] }
         req_veh.forEach(function(bdaddr) {
             var doc = {}
             if (vehicles[bdaddr]) {
-                doc.bdaddr = vehicles[bdaddr];
+                doc[bdaddr] = vehicles[bdaddr];
                 resp_veh.veh.push(doc);
             }
         })
-        resp.json(resp_veh);
+        res.json(resp_veh);
     }
 })
 
