@@ -28,19 +28,35 @@ app.get('/lot',function(req,res){
 
 })
 
+
 app.get('/dev',function(req,res){
 	if(req.query.id == 'all'){
 		res.json(lot_devices);
 	}
 })
 
+//Pass Blue-tooth adddress and get the corresponding vehicle
 app.get('/veh',function(req,res){
+	var req_veh = req.body.veh; // This is an array
+	var resp_veh = {veh:[]}
+	req_veh.forEach(function(bdaddr){
+		var doc = {}
+		if (vehicles[bdaddr]){
+			doc.bdaddr = vehicles[bdaddr];
+			resp_veh.veh.push(doc);
+		}
+	})
+	resp.json(resp_veh);
+
+})
+
+//Get Blue-tooth adddresses and return only vehicles
+app.post('/veh',function(req,res){
 	if(req.query.id){
 		resp = {'veh':vehicles[req.query.id]};
 		res.json(resp);
 	}
 })
-
 
 app.post('/lot',function(req,res){
 	var lotid = req.query.lotid;
