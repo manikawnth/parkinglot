@@ -15,10 +15,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 
-
+/* -----------------------------------------------------------------
+						WEB-PAGE SERVICES
+-------------------------------------------------------------------*/
 app.get('/', function(req, res) {
     //console.log("Entered home page");
     res.sendFile('index.html', { root: __dirname + '/client' });
+})
+
+app.get('/dev', function(req, res) {
+    if (req.query.id == 'all') {
+        res.json(lot_devices);
+    }
 })
 
 app.get('/lot', function(req, res) {
@@ -28,14 +36,41 @@ app.get('/lot', function(req, res) {
 
 })
 
+app.post('/lot', function(req, res) {
+    var lotid = req.query.lotid;
+    var devid = req.query.devid;
+    if (lotid && devid && lots[devid]) {
+        lots[devid] = lotid;
+    }
+    res.json(lots);
 
-app.get('/dev', function(req, res) {
+})
+
+app.get('/mva', function(req, res) {
     if (req.query.id == 'all') {
-        res.json(lot_devices);
+        res.json(vehicles);
     }
 })
 
+app.post('/mva', function(req, res) {
+	var mva = req.query.mva;
+	var devid = req.query.devid;
+    if (mva && devid) {
+        vehicles[devid] = mva;
+    }
+    res.json(vehicles);
+})
 
+
+app.get('/checkin', function(req, res) {
+    var lotid = req.query.lotid;
+    res.json(checkin[lotid]);
+
+})
+
+/* -----------------------------------------------------------------
+						PYTHON-pi SERVICES
+-------------------------------------------------------------------*/
 //Get Blue-tooth adddresses and return only vehicles
 app.post('/veh', function(req, res) {
     if (req.query.id) {
@@ -56,16 +91,6 @@ app.post('/veh', function(req, res) {
     }
 })
 
-app.post('/lot', function(req, res) {
-    var lotid = req.query.lotid;
-    var devid = req.query.devid;
-    if (lotid && devid && lots[devid]) {
-        lots[devid] = lotid;
-    }
-    res.json(lots);
-
-})
-
 app.post('/checkin', function(req, res) {
     //console.log(req.body);	
     var lotid = req.body.lotid;
@@ -81,11 +106,6 @@ app.post('/checkin', function(req, res) {
 })
 
 
-app.get('/checkin', function(req, res) {
-    var lotid = req.query.lotid;
-    res.json(checkin[lotid]);
-
-})
 app.listen(port, function() {
     console.log("Server is listening on port " + port);
 })
@@ -96,15 +116,15 @@ var lot_devices = {
     '80:1A:7D:DA:71:14': 'DUMMY3'
 }
 
-var vehicles = {
-    'A0:02:DC:51:49:F9': '068543219',
-    'D0:25:98:BD:C0:3B': '894532103'
-}
-
 var lots = {
     '00:1A:7D:DA:71:14': 'A11',
     '60:1A:7D:DA:71:15': 'A22',
     '80:1A:7D:DA:71:14': 'B12'
+}
+
+var vehicles = {
+    'A0:02:DC:51:49:F9': '068543219',
+    'D0:25:98:BD:C0:3B': '894532103'
 }
 
 var checkin = {

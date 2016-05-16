@@ -73,8 +73,48 @@
             <md-tab id="vehicle">
                 <md-tab-label>Vehicle Configuration</md-tab-label>
                 <md-tab-body>
-                    <div layout="column" flex layout-margin="100">
-                        View for Item #x
+                    <div ng-controller="VehicleCtrl as vc" layout="column" flex layout-margin="100" layout-align="center center">
+                        <div>
+                            <h2>Current Vehicle assignments</h2>
+                            <table st-table="vc.mvas" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>BLE Address</th>
+                                        <th>MVA Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(devid,mva) in vc.mvas">
+                                        <td>{{devid}}</td>
+                                        <td>{{mva}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h2>Modify Vehicle assignments</h2>
+                            <br />
+                            <div layout="row" layout-align="space-around">
+                                <md-input-container>
+                                    <label>Device Id</label>
+                                    <md-select ng-model="vc.selected_device">
+                                        <md-option ng-repeat="(devid,mva) in vc.mvas" value="{{devid}}">
+                                            {{devid  || uppercase}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container>
+                                    <label>MVA Number</label>
+                                    <input type="text" maxlength="9" ng-model="vc.input_mva">
+                                </md-input-container>
+                                <md-input-container>
+                                    <md-button class="md-raised" ng-click="vc.assign_mva();">Submit</md-button>
+                                </md-input-container>
+                            </div>
+                            <div layout="row">
+                                <label style="color:red;">{{pc.errorMsg}}</label>
+                            </div>
+                        </div>
                     </div>
                 </md-tab-body>
             </md-tab>

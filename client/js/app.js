@@ -26,24 +26,42 @@
         var parkinglot = {
             lots: {},
             devices: {},
-            getLots: function(id) {
-                return $http.get('/lot?id=' + id);
-            },
-            getDevices: function(dev) {
-                return $http.get('/dev?id=' + dev);
-            },
+            mvas : {},
             getLot: function(devid) {
                 if (devid) {
                     return this.lots[devid];
                 }
             },
+            getLots: function(id) {
+                return $http.get('/lot?id=' + id);
+            },
+
             saveLot: function(devid, lotid) {
                 return $http.post('/lot?lotid=' + lotid + '&' + 'devid=' + devid);
+            },
+            getMVA: function(devid) {
+                if (devid) {
+                    return this.lots[devid];
+                }
+            },
+            getMVAs: function(id) {
+                return $http.get('/mva?id=' + id);
+            },
+            saveMVA: function(devid, mva) {
+                return $http.post('/mva?mva=' + mva + '&' + 'devid=' + devid);
+            },
+            getMVADev: function(mva) {
+                if (mva) {
+                    return _.invert(this.mvas)[mva];
+                }
             },
             getDev: function(lotid) {
                 if (lotid) {
                     return _.invert(this.lots)[lotid];
                 }
+            },
+            getDevices: function(dev) {
+                return $http.get('/dev?id=' + dev);
             },
             pollDevice: function(lotid,version){
                 return $http.get('/checkin?lotid=' + lotid + '&version=' + version );
@@ -119,5 +137,33 @@
             );
         };
     }]);
+
+
+    app.controller('VehicleCtrl', ['$scope', 'parkingLot',function($scope,parkingLot){
+        var vc = this;        
+        vc.errorMsg = '';
+
+        parkingLot.getMVAs('all')
+            .then(function(resp) {
+                parkingLot.mvas = resp.data;
+                vc.mvas = parkingLot.mvas;
+            });
+        vc.assign_mva = function() {
+            vc.errorMsg = '';
+            var devid = parkingLot.getMVADev(vc.input_mva);
+            if (devid) {
+                vc.errorMsg = "Vehicle already assigned to device:" + devid;
+            } else {
+                parkingLot.saveMVA(vc.selected_device, vc.input_mva)
+                    .then(function(resp) {
+                        parkingLot.mvas = resp.data;
+                        vc.mvas = parkingLot.mvas;
+                    })
+            }
+            
+            vc.selected_device = undefined;
+            vc.input_mva = undefined;
+        }
+    }])
 
 })()
