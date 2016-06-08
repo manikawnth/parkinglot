@@ -120,14 +120,14 @@ app.listen(port, function() {
 })
 
 var lot_devices = {
-    '00:1A:7D:DA:71:14': 'LOT1',
-    'B8:27:EB:CD:05:88': 'LOT2'
+    '00:1A:7D:DA:71:14': 'RPI2',
+    'B8:27:EB:CD:05:88': 'RPI3',
     '60:1A:7D:DA:71:15': 'DUMMY2',
     '80:1A:7D:DA:71:14': 'DUMMY3'
 }
 
 var lots = {
-    '00:1A:7D:DA:71:14': 'A11',
+    '00:1A:7D:DA:71:14': 'R12',
     'B8:27:EB:CD:05:88': 'P13',
     '60:1A:7D:DA:71:15': 'A22',
     '80:1A:7D:DA:71:14': 'B12'
