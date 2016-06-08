@@ -140,5 +140,5 @@ var vehicles = {
 }
 
 var checkin = {
-    '00:1A:7D:DA:71:14': { mva: ' ', miles: ' ', gas: ' ', timestamp:'',notified:'' }
+    'B8:27:EB:CD:05:88': { mva: ' ', miles: ' ', gas: ' ', timestamp:'',notified:'' }
 }
