@@ -68,8 +68,9 @@ app.get('/checkin', function(req, res) {
         res.json({});
     }
     else{
-        checkin[lotid]['notified'] = 'Y'
-        res.json(checkin[lotid]);    
+        var resp_checkin = cloneObject(checkin)
+        checkin[lotid]['notified'] = 'Y'        
+        res.json(resp_checkin);    
     }
     
 
@@ -99,11 +100,11 @@ app.post('/veh', function(req, res) {
 })
 
 app.post('/checkin', function(req, res) {
-    //console.log(req.body);	
+    console.log(req.body);	
     var lotid = req.body.lotid;
     var mva = req.body.mva;
     var miles = req.body.miles;
-    var gas = req.body.gas
+    var gas = req.body.gas;
 
     checkin[lotid].mva = mva;
     checkin[lotid].miles = miles;
@@ -141,4 +142,15 @@ var vehicles = {
 
 var checkin = {
     'B8:27:EB:CD:05:88': { mva: ' ', miles: ' ', gas: ' ', timestamp:'',notified:'' }
+}
+
+function cloneObject(obj) {
+    var clone = {};
+    for(var i in obj) {
+        if(typeof(obj[i])=="object" && obj[i] != null)
+            clone[i] = cloneObject(obj[i]);
+        else
+            clone[i] = obj[i];
+    }
+    return clone;
 }
