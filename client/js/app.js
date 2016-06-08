@@ -122,7 +122,7 @@
                 }*/
                 parkingLot.lastCheckin = resp.data;
                 if((resp.data.mva != ' ') && (resp.data.notified == 'N')){
-                    pc.modal_title = 'Vehicle Checked in at Lot ' + parkingLot.lots['00:1A:7D:DA:71:14']
+                    pc.modal_title = 'Vehicle Checked in at Lot ' + parkingLot.lots['B8:27:EB:CD:05:88']
                     pc.modal_html = '<div><pre>MVA   - ' + resp.data.mva + '\nMILES - ' + resp.data.miles + '\nGAS   - ' + resp.data.gas + '</pre></div>' 
                     pc.showSimpleToast(parkingLot.lastCheckin);  
                 }
