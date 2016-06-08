@@ -141,7 +141,7 @@ var vehicles = {
 }
 
 var checkin = {
-    'B8:27:EB:CD:05:88': { mva: '123456789', miles: ' ', gas: ' ', timestamp:'',notified:'N' }
+    'B8:27:EB:CD:05:88': { mva: ' ', miles: ' ', gas: ' ', timestamp:'',notified:'' }
 }
 
 function cloneObject(obj) {
