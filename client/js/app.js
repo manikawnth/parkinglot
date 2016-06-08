@@ -108,7 +108,7 @@
         parkingLot.lastCheckin = { mva: ' ', miles: ' ', gas: ' ', timestamp:'',notified:'' }
         $interval(function(){
             pc.version += 1;
-            parkingLot.pollDevice('00:1A:7D:DA:71:14',pc.version)
+            parkingLot.pollDevice('B8:27:EB:CD:05:88',pc.version)
             .then(function(resp){
                 /*var flag = false;
                 if ((resp.data.mva != ' ') && (parkingLot.lastCheckin.mva != resp.data.mva)){
@@ -120,7 +120,7 @@
                     pc.modal_html = '<div><pre>MVA   - ' + parkingLot.lastCheckin.mva + '\nMILES - ' + parkingLot.lastCheckin.miles + '\nGAS   - ' + parkingLot.lastCheckin.gas + '</pre></div>' 
                     pc.showSimpleToast(parkingLot.lastCheckin);    
                 }*/
-
+                parkingLot.lastCheckin = resp.data;
                 if((resp.data.mva != ' ') && (resp.data.notified == 'N')){
                     pc.modal_title = 'Vehicle Checked in at Lot ' + parkingLot.lots['00:1A:7D:DA:71:14']
                     pc.modal_html = '<div><pre>MVA   - ' + resp.data.mva + '\nMILES - ' + resp.data.miles + '\nGAS   - ' + resp.data.gas + '</pre></div>' 

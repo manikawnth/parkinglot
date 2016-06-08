@@ -121,12 +121,14 @@ app.listen(port, function() {
 
 var lot_devices = {
     '00:1A:7D:DA:71:14': 'LOT1',
+    'B8:27:EB:CD:05:88': 'LOT2'
     '60:1A:7D:DA:71:15': 'DUMMY2',
     '80:1A:7D:DA:71:14': 'DUMMY3'
 }
 
 var lots = {
     '00:1A:7D:DA:71:14': 'A11',
+    'B8:27:EB:CD:05:88': 'P13',
     '60:1A:7D:DA:71:15': 'A22',
     '80:1A:7D:DA:71:14': 'B12'
 }
