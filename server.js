@@ -64,7 +64,14 @@ app.post('/mva', function(req, res) {
 
 app.get('/checkin', function(req, res) {
     var lotid = req.query.lotid;
-    res.json(checkin[lotid]);
+    if(!lotid){
+        res.json({});
+    }
+    else{
+        checkin[lotid]['notified'] = 'Y'
+        res.json(checkin[lotid]);    
+    }
+    
 
 })
 
@@ -101,6 +108,8 @@ app.post('/checkin', function(req, res) {
     checkin[lotid].mva = mva;
     checkin[lotid].miles = miles;
     checkin[lotid].gas = gas;
+    checkin[lotid].notified = 'N';
+    checkin[lotid].timestamp = (new Date()).toString();
     //console.log(checkin);
     res.status(200).end();
 })
@@ -124,9 +133,10 @@ var lots = {
 
 var vehicles = {
     'A0:02:DC:51:49:F9': '068543219',
-    'D0:25:98:BD:C0:3B': '894532103'
+    'D0:25:98:BD:C0:3B': '894532103',
+    '00:1D:A5:00:0F:B6': '045803096'
 }
 
 var checkin = {
-    '00:1A:7D:DA:71:14': { mva: ' ', miles: ' ', gas: ' ' }
+    '00:1A:7D:DA:71:14': { mva: ' ', miles: ' ', gas: ' ', timestamp:'',notified:'' }
 }

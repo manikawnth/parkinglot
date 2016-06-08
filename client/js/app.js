@@ -105,21 +105,28 @@
             pc.selected_device = undefined;
             pc.input_lot = undefined;
         }
-        parkingLot.lastCheckin = {mva:' ',miles:' ',gas:' '}
+        parkingLot.lastCheckin = { mva: ' ', miles: ' ', gas: ' ', timestamp:'',notified:'' }
         $interval(function(){
             pc.version += 1;
             parkingLot.pollDevice('00:1A:7D:DA:71:14',pc.version)
             .then(function(resp){
-                var flag = false;
+                /*var flag = false;
                 if ((resp.data.mva != ' ') && (parkingLot.lastCheckin.mva != resp.data.mva)){
                     flag = true;
                 }
                 parkingLot.lastCheckin = resp.data;
                 if (flag){
-                    pc.modal_title = 'Vehicle Checked out of Lot ' + parkingLot.lots['00:1A:7D:DA:71:14']
+                    pc.modal_title = 'Vehicle Checked in at Lot ' + parkingLot.lots['00:1A:7D:DA:71:14']
                     pc.modal_html = '<div><pre>MVA   - ' + parkingLot.lastCheckin.mva + '\nMILES - ' + parkingLot.lastCheckin.miles + '\nGAS   - ' + parkingLot.lastCheckin.gas + '</pre></div>' 
                     pc.showSimpleToast(parkingLot.lastCheckin);    
+                }*/
+
+                if((resp.data.mva != ' ') && (resp.data.notified == 'N')){
+                    pc.modal_title = 'Vehicle Checked in at Lot ' + parkingLot.lots['00:1A:7D:DA:71:14']
+                    pc.modal_html = '<div><pre>MVA   - ' + resp.data.mva + '\nMILES - ' + resp.data.miles + '\nGAS   - ' + resp.data.gas + '</pre></div>' 
+                    pc.showSimpleToast(parkingLot.lastCheckin);  
                 }
+
             })
         },5000)
 
