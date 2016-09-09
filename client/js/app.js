@@ -65,6 +65,9 @@
             },
             pollDevice: function(lotid,version){
                 return $http.get('/checkin?lotid=' + lotid + '&version=' + version );
+            },
+            getSpeedAlerts: function(){
+                return $http.get('/speedalerts');
             }
         }
         return parkinglot;
@@ -146,7 +149,7 @@
     }]);
 
 
-    app.controller('VehicleCtrl', ['$scope', 'parkingLot',function($scope,parkingLot){
+    app.controller('VehicleCtrl', ['$scope','$interval' ,'parkingLot',function($scope, $interval, parkingLot){
         var vc = this;        
         vc.errorMsg = '';
 
@@ -171,6 +174,17 @@
             vc.selected_device = undefined;
             vc.input_mva = undefined;
         }
+        $interval(function(){
+            parkingLot.getSpeedAlerts()
+            .then(function(resp){
+                if(resp.data.mva){
+                    var title = "Speeding alert for: " + resp.data.mva;
+                    var body = "Speed is over " + resp.data.carSpeed + " miles/hr";
+                    toastr["error"](body, title);
+                }
+            })
+        },1000)
+
     }])
 
 })()

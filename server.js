@@ -116,6 +116,53 @@ app.post('/checkin', function(req, res) {
 })
 
 
+/* -----------------------------------------------------------------
+                        Alert Notification Services
+-------------------------------------------------------------------*/
+var EventHubClient = require('azure-event-hubs').Client;
+
+//var connectionString = 'HostName=avis-iothub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=evtXjTePG6hWC/nC/YfrwI32qQnqNPcxThLgva1LiNk=';
+//var connectionString = 'HostName=vehiclehub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=SXoumJO7UIddN6rk+K26bqVhkWoi2+NXx6JdZ+vYxc8=';
+var connectionString = 'Endpoint=sb://iotalerts.servicebus.windows.net/;SharedAccessKeyName=vehiclealerts;SharedAccessKey=Gl+xVMXePLHU6FekrbPl3Iv4xPwud9z5o6t0ZYq1Jgw=;EntityPath=vehiclealerts';
+
+
+var printError = function (err) {
+  console.log(err.message);
+};
+
+var alertData = {};
+var printMessage = function (message) {
+  console.log('Message received: ');
+  console.log(JSON.stringify(message.body));
+  console.log('');
+  alertData.mva = message.body.mva;
+  alertData.carSpeed = message.body.carSpeed;
+};
+
+var client = EventHubClient.fromConnectionString(connectionString);
+client.open()
+    .then(client.getPartitionIds.bind(client))
+    .then(function (partitionIds) {
+        return partitionIds.map(function (partitionId) {
+            return client.createReceiver('$Default', partitionId, { 'startAfterTime' : Date.now()}).then(function(receiver) {
+                console.log('Created partition receiver: ' + partitionId)
+                receiver.on('errorReceived', printError);
+                receiver.on('message', printMessage);
+            });
+        });
+    })
+    .catch(printError);
+
+app.get('/speedalerts',function(req,res){
+    //alertData = {'mva':24234234,'carSpeed':98.2};
+    res.json(alertData);
+    alertData = {};
+})
+
+/* -----------------------------------------------------------------
+                        Alert Notification Services
+-------------------------------------------------------------------*/
+
 app.listen(port, function() {
     console.log("Server is listening on port " + port);
 })
