@@ -115,6 +115,15 @@ app.post('/checkin', function(req, res) {
     res.status(200).end();
 })
 
+/* -----------------------------------------------------------------
+                        Odometer update Services
+-------------------------------------------------------------------*/
+app.post('/updateOdoMiles',function(req,res){
+    if (req.body.miles !=0 ){
+        odoMiles.oldmiles = odoMiles.newmiles;
+        odoMiles.newmiles = req.body.miles;
+    }
+})
 
 /* -----------------------------------------------------------------
                         Alert Notification Services
@@ -190,6 +199,9 @@ var vehicles = {
 var checkin = {
     'B8:27:EB:CD:05:88': { mva: ' ', miles: ' ', gas: ' ', timestamp:'',notified:'' }
 }
+
+//Odometer capture
+var odoMiles = {oldmiles:0, newmiles:0}
 
 function cloneObject(obj) {
     var clone = {};
