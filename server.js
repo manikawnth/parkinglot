@@ -119,11 +119,14 @@ app.post('/checkin', function(req, res) {
                         Odometer update Services
 -------------------------------------------------------------------*/
 app.post('/updateOdoMiles',function(req,res){
-    if (req.body.miles !=0 ){
+    console.log("ODO Miles:" + req.body.miles);
+    if (req.query.miles !=0 ){        
         odoMiles.oldmiles = odoMiles.newmiles;
         odoMiles.newmiles = req.body.miles;
     }
-})
+    res.status(200).end();
+});
+
 
 /* -----------------------------------------------------------------
                         Alert Notification Services
